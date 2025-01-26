@@ -20,10 +20,10 @@ hotel_grande = st.selectbox("¿Es un hotel grande?", options=["No", "Sí"])
 hotel_grande_dummy = 1 if hotel_grande == "Sí" else 0
 
 lead_time = st.slider("Lead Time (número de días desde la reserva hasta el check-in)", min_value=0, max_value=1500, value=800)
-noches = st.slider("Número de noches reservadas", min_value=1, max_value=1100, value=4)
+noches = st.slider("Número de noches reservadas", min_value=1, max_value=365, value=4)
 familia = st.selectbox("¿Es una familia?", options=["No", "Sí"])
 familia_dummy = 1 if familia == "Sí" else 0
-valor_reserva = st.number_input("Valor de la reserva (€)", min_value=0, value=120000)
+valor_reserva = st.slider("Valor de la reserva (€)", min_value=0, max_value=120000, value=3000)
 cunas = st.selectbox("¿Se ha solicitado una cuna?", options=["No", "Sí"])
 cunas_dummy = 1 if cunas == "Sí" else 0
 adultos = st.slider("Número de adultos", min_value=1, max_value=8, value=2)
