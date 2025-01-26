@@ -19,7 +19,7 @@ Introduce los valores de las variables y obten la probabilidad de que se produzc
 hotel_grande = st.selectbox("¿Es un hotel grande?", options=["No", "Sí"])
 hotel_grande_dummy = 1 if hotel_grande == "Sí" else 0
 
-lead_time = st.number_input("Lead Time (numero de dias desde la reserva hasta el check-in)", min_value=0, value=800)
+lead_time = st.slider("Lead Time (número de días desde la reserva hasta el check-in)", min_value=0, max_value=1500, value=800)
 noches = st.slider("Número de noches reservadas", min_value=1, max_value=1100, value=4)
 familia = st.selectbox("¿Es una familia?", options=["No", "Sí"])
 familia_dummy = 1 if familia == "Sí" else 0
