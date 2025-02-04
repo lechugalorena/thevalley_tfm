@@ -1,6 +1,6 @@
 
-# Código de tu aplicación en Streamlit
-import streamlit as st
+import pandas as pd
+import pickle
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -9,57 +9,36 @@ from email.mime.text import MIMEText
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 GMAIL_USER = "thevalleypalladium@gmail.com"
-GMAIL_PASSWORD = "poiu vjjs upgl brme"  # Usa la contraseña de aplicación
+GMAIL_PASSWORD = "poiu vjjs upgl brme"  # Usa una contraseña de aplicación
 
-# Función para enviar email
+# Carga del modelo entrenado
+def cargar_modelo():
+    with open('modelo.pkl', 'rb') as file:
+        return pickle.load(file)
+
+logmodel = cargar_modelo()
+
+def predecir_cancelacion(data):
+    return logmodel.predict_proba(data)[:, 1]
+
 def enviar_correo(destinatario):
-    msg = MIMEMultipart()
-    msg["From"] = GMAIL_USER
-    msg["To"] = destinatario
-    msg["Subject"] = "Oferta Especial en Palladium Hotels"
-
-    # HTML del correo con imagen alojada en Google Drive
+    asunto = "Oferta especial para Palladium: Activa tu descuento"
     mensaje_html = '''
     <html>
-        <head>
-            <style>
-                body { font-family: Arial, sans-serif; color: #333; background-color: #f7f7f7; text-align: center; }
-                .container { width: 80%; max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-                h1 { color: #007BFF; }
-                .image-container img { width: 100%; border-radius: 10px; }
-                .cta-button { 
-                    display: inline-block; 
-                    padding: 15px 25px; 
-                    font-size: 18px; 
-                    color: white; 
-                    background-color: #007BFF; 
-                    text-decoration: none; 
-                    border-radius: 5px;
-                    font-weight: bold;
-                }
-                .footer { font-size: 12px; color: #777; margin-top: 20px; }
-            </style>
-        </head>
+        <head></head>
         <body>
-            <div class="container">
-                <h1>Oferta Exclusiva para Ti</h1>
-                <p>Queremos asegurarnos de que disfrutes de una experiencia increíble.</p>
-                <div class="image-container">
-                    <img src="https://drive.google.com/uc?id=1s5pRyV8Po48F_dM8ixgOMSQdsQhMuQI-" alt="Hotel de Lujo">
-                </div>
-                <p>Porque tenemos muchas ganas de verte, hemos preparado una oferta especial con un <strong>descuento exclusivo</strong> en tu próxima estadía.</p>
-                <a href="https://palladiumhotels.com/activar-descuento" class="cta-button">Activar Descuento</a>
-                <p>¡No dejes pasar esta oportunidad única!</p>
-                <p>Saludos,</p>
-                <p><strong>Equipo Palladium Hotels</strong></p>
-                <div class="footer">
-                    <p>Si tienes dudas, contáctanos en <a href="mailto:soporte@palladiumhotels.com">soporte@palladiumhotels.com</a></p>
-                </div>
-            </div>
+            <h1>Oferta Exclusiva para Palladium</h1>
+            <p>Queremos evitar la cancelación y, para ello, te ofrecemos un <strong>descuento especial</strong> en tu próxima reserva.</p>
+            <p><a href="https://palladiumhotels.com/activar-descuento">Activar Descuento</a></p>
+            <p>¡No dejes pasar esta oportunidad!</p>
         </body>
     </html>
     '''
     
+    msg = MIMEMultipart("alternative")
+    msg["From"] = GMAIL_USER
+    msg["To"] = destinatario
+    msg["Subject"] = asunto
     msg.attach(MIMEText(mensaje_html, "html"))
     
     try:
@@ -68,19 +47,40 @@ def enviar_correo(destinatario):
         server.login(GMAIL_USER, GMAIL_PASSWORD)
         server.sendmail(GMAIL_USER, destinatario, msg.as_string())
         server.quit()
-        return "✅ Correo enviado correctamente."
+        return "Correo enviado correctamente."
     except Exception as e:
-        return f"❌ Error al enviar el correo: {e}"
+        return f"Error al enviar el correo: {e}"
 
-# Interfaz de usuario con Streamlit
-st.title("📩 Envío de Ofertas de Palladium Hotels")
-st.write("Introduce el correo del destinatario para enviar la oferta exclusiva.")
+# Inputs manuales en Google Colab
+hotel_grande_dummy = int(input("¿Es un hotel grande? (1=Sí, 0=No): "))
+lead_time = int(input("Lead Time (número de días desde la reserva hasta el check-in): "))
+noches = int(input("Número de noches reservadas: "))
+familia_dummy = int(input("¿Es una familia? (1=Sí, 0=No): "))
+valor_reserva = float(input("Valor de la reserva (€): "))
+cunas_dummy = int(input("¿Se ha solicitado una cuna? (1=Sí, 0=No): "))
+adultos = int(input("Número de adultos: "))
+fidelidad_dummy = int(input("¿Es un cliente fidelizado? (1=Sí, 0=No): "))
+aux_tipo_valor = int(input("Tipo de habitación (Número entre 0 y 6): "))
 
-recipient_email = st.text_input("✉️ Correo del destinatario:")
+data = pd.DataFrame({
+    'HOTEL_GRANDE_DUMMY': [hotel_grande_dummy],
+    'LEAD_TIME': [lead_time],
+    'NOCHES': [noches],
+    'FAMILIA': [familia_dummy],
+    'VALOR_RESERVA': [valor_reserva],
+    'CUNAS': [cunas_dummy],
+    'ADULTOS': [adultos],
+    'FIDELIDAD_DUMMY': [fidelidad_dummy],
+    'AUX_TIPO': [aux_tipo_valor]
+})
 
-if st.button("Enviar Email"):
+probabilidad = predecir_cancelacion(data)[0] * 100
+print(f"La probabilidad de cancelación es del {probabilidad:.2f}%")
+
+if probabilidad > 50:
+    recipient_email = input("Ingrese el correo del destinatario: ")
     if recipient_email:
         resultado = enviar_correo(recipient_email)
-        st.success(resultado)
+        print(resultado)
     else:
-        st.warning("⚠️ Ingresa un correo antes de enviar.")
+        print("⚠️ No se ingresó un destinatario.")
