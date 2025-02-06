@@ -18,6 +18,18 @@ def cargar_modelo():
 
 logmodel = cargar_modelo()
 
+def enviar_correo_callback():
+    recipient_email = st.session_state.get("recipient_email", "")
+    if recipient_email and "@" in recipient_email:
+        result = enviar_correo(recipient_email)
+        if result == True:
+            st.success("¡El correo de oferta se ha enviado exitosamente!")
+        else:
+            st.error(result)
+    else:
+        st.warning("Por favor, ingrese un correo electrónico válido.")
+        
+
 def predecir_cancelacion(data):
     return logmodel.predict_proba(data)[:, 1]
 
@@ -138,14 +150,9 @@ if st.button("Predecir Cancelación"):
     
     if probabilidad > 50:
         st.info("La probabilidad de cancelación supera el 50%. Se recomienda enviar una oferta especial.")
-        recipient_email = st.text_input("Ingrese el correo del destinatario:")
         
-        if recipient_email and "@" in recipient_email:
-            if st.button("Enviar Correo de Oferta"):
-                result = enviar_correo(recipient_email)
-                if result == True:
-                    st.success("¡El correo de oferta se ha enviado exitosamente!")
-                else:
-                    st.error(result)
-        else:
-            st.warning("Por favor, ingrese un correo electrónico válido.")
+        recipient_email = st.text_input(
+            "Ingrese el correo del destinatario:",
+            key="recipient_email",
+            on_change=enviar_correo_callback
+        )
