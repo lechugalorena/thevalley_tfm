@@ -1,25 +1,13 @@
-import streamlit as st
-import pandas as pd
-import pickle
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 
 # Configuración del servidor SMTP
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 GMAIL_USER = "thevalleypalladium@gmail.com"
 GMAIL_PASSWORD = "poiu vjjs upgl brme"  # Usa una contraseña de aplicación
-
-@st.cache_resource
-def cargar_modelo():
-    with open('modelo.pkl', 'rb') as file:
-        return pickle.load(file)
-
-logmodel = cargar_modelo()
-
-def predecir_cancelacion(data):
-    return logmodel.predict_proba(data)[:, 1]
 
 def enviar_correo(destinatario):
     asunto = "Oferta especial de Palladium: Activa tu beneficio en tu próxima reserva"
@@ -104,48 +92,10 @@ def enviar_correo(destinatario):
         server.login(GMAIL_USER, GMAIL_PASSWORD)
         server.send_message(msg)
         server.quit()
-        return True
+        return print("Correo enviado correctamente.")
     except Exception as e:
         return f"Error al enviar el correo: {e}"
-
-# Interfaz de Streamlit
-st.title("Predicción de Cancelación y Envío de Oferta Especial")
-st.write("Complete la siguiente información:")
-
-lead_time = st.number_input("Lead Time (días desde la reserva hasta el check-in):", min_value=0, step=1, value=0)
-noches = st.number_input("Número de noches reservadas:", min_value=1, step=1, value=1)
-familia_dummy = st.selectbox("¿Es una familia?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
-valor_reserva = st.number_input("Valor de la reserva (€):", min_value=0.0, step=1.0, value=0.0)
-cunas_dummy = st.selectbox("¿Se ha solicitado una cuna?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
-adultos = st.number_input("Número de adultos:", min_value=1, step=1, value=1)
-fidelidad_dummy = st.selectbox("¿Es un cliente fidelizado?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
-aux_tipo_valor = st.slider("Tipo de habitación (0 a 6):", min_value=0, max_value=6, value=3)
-
-if st.button("Predecir Cancelación"):
-    data = pd.DataFrame({
-        'LEAD_TIME': [lead_time],
-        'NOCHES': [noches],
-        'FAMILIA': [familia_dummy],
-        'VALOR_RESERVA': [valor_reserva],
-        'CUNAS': [cunas_dummy],
-        'ADULTOS': [adultos],
-        'FIDELIDAD_DUMMY': [fidelidad_dummy],
-        'AUX_TIPO': [aux_tipo_valor]
-    })
     
-    probabilidad = predecir_cancelacion(data)[0] * 100
-    st.success(f"La probabilidad de cancelación es del {probabilidad:.2f}%")
-    
-    if probabilidad > 50:
-        st.info("La probabilidad de cancelación supera el 50%. Se recomienda enviar una oferta especial.")
-        recipient_email = st.text_input("Ingrese el correo del destinatario:")
-        
-        if recipient_email and "@" in recipient_email:
-            if st.button("Enviar Correo de Oferta"):
-                result = enviar_correo(recipient_email)
-                if result == True:
-                    st.success("¡El correo de oferta se ha enviado exitosamente!")
-                else:
-                    st.error(result)
-        else:
-            st.warning("Por favor, ingrese un correo electrónico válido.")
+
+if __name__ == '__main__':
+    enviar_correo("lorena.lechuga@thevallians.com")
