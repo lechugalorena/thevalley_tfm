@@ -142,7 +142,7 @@ tipo_habitacion_dict = {
     "Superior": 6
 }
 
-tipo_habitacion = st.selectbox("Tipo de habitación:", options=list(tipo_habitacion_dict.keys()))
+tipo_habitacion = st.selectbox("Tipo de habitación:", options=list(tipo_habitacion_dict.keys()), index=list(tipo_habitacion_dict.keys()).index("Junior Suite"))
 aux_tipo_valor = tipo_habitacion_dict[tipo_habitacion]
 
 if st.button("Predecir Cancelación"):
