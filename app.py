@@ -128,6 +128,7 @@ lead_time = st.number_input("Lead Time (días desde la reserva hasta el check-in
 noches = st.number_input("Número de noches reservadas:", min_value=1, step=1, value=7)
 familia_dummy = st.selectbox("¿Es una familia?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
 valor_reserva = st.number_input("Valor de la reserva (€):", min_value=0.0, step=1.0, value=1500.0)
+cunas_dummy = st.selectbox("¿Se ha solicitado una cuna?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
 adultos = st.number_input("Número de adultos:", min_value=1, step=1, value=2)
 fidelidad_dummy = st.selectbox("¿Es un cliente fidelizado?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
 aux_tipo_valor = st.slider("Tipo de habitación (0 a 6):", min_value=0, max_value=6, value=3)
@@ -138,6 +139,7 @@ if st.button("Predecir Cancelación"):
         'NOCHES': [noches],
         'FAMILIA': [familia_dummy],
         'VALOR_RESERVA': [valor_reserva],
+        'CUNAS': [cunas_dummy],
         'ADULTOS': [adultos],
         'FIDELIDAD_DUMMY': [fidelidad_dummy],
         'AUX_TIPO': [aux_tipo_valor]
