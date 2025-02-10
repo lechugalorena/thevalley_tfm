@@ -96,7 +96,7 @@ def enviar_correo(destinatario):
             <p>Nos alegra tenerte con nosotros. Por eso, te ofrecemos un <strong>descuento especial</strong> para que disfrutes de tu próxima experiencia.</p>
             <img class="hotel-image" src="https://www.palladiumhotelgroup.com/content/dam/palladium/images/hoteles/mexico/costa-mujeres/hotel/piscinas/grand-palladium-costa-mujeres-resort-spa/Grand-Palladium-Costa-Mujeres-Resort-Spa_Vista-general-de-la-piscina-principal.jpg.transform/rendition-md/image.jpg" alt="Hotel Imagen">
             <p style="text-align: center;">
-                <a class="button" href="https://palladiumhotels.com/activar-descuento">¡Activa tu descuento ahora! 👉</a>
+                <a class="button" href="https://palladiumhotels.com/activar-descuento">¡Activa tu descuento ahora!</a>
             </p>
             <p style="text-align: center;">¡No esperes, estamos aquí para ayudarte a disfrutar lo mejor! 🤝</p>
         </div>
