@@ -77,15 +77,15 @@ def enviar_correo(destinatario):
                 line-height: 1.6;
             }
             .button {
-                display: inline-block;
-                background-color: #b8860b;
-                color: #ffffff;
-                padding: 12px 24px;
-                margin: 20px 0;
-                text-decoration: none;
-                border-radius: 6px;
-                text-align: center;
-                font-weight: bold;
+                display: inline-block; 
+                background-color: #b8860b;  /* Color dorado oscuro */
+                color: #ffffff !important;  /* Letras blancas forzadas */
+                padding: 12px 24px; 
+                margin: 20px 0; 
+                text-decoration: none !important;  /* Evita que el navegador lo subraye como enlace */
+                border-radius: 6px; 
+                text-align: center; 
+                font-weight: bold; 
             }
         </style>
     </head>
