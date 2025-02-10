@@ -41,7 +41,7 @@ def enviar_correo(destinatario):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>¡Oferta Exclusiva para Ti! 🎉</title>
+        <title>¡Oferta exclusiva para ti! </title>
         <style>
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -78,7 +78,7 @@ def enviar_correo(destinatario):
             }
             .button {
                 display: inline-block;
-                background-color: #28a745;
+                background-color: #b8860b;
                 color: #ffffff;
                 padding: 12px 24px;
                 margin: 20px 0;
@@ -92,8 +92,8 @@ def enviar_correo(destinatario):
     <body>
         <div class="container">
             <img class="header-image" src="https://intripertravelmedia.com/wp-content/uploads/2019/10/logo.png" alt="Enterprise Icon">
-            <h1>¡Hola! 😄 Descubre tu oferta exclusiva</h1>
-            <p>Nos alegra tenerte con nosotros. Por eso, te ofrecemos un <strong>descuento especial</strong> para que disfrutes de tu próxima experiencia. 🚀</p>
+            <h1>Descubre tu oferta exclusiva</h1>
+            <p>Nos alegra tenerte con nosotros. Por eso, te ofrecemos un <strong>descuento especial</strong> para que disfrutes de tu próxima experiencia.</p>
             <img class="hotel-image" src="https://www.palladiumhotelgroup.com/content/dam/palladium/images/hoteles/mexico/costa-mujeres/hotel/piscinas/grand-palladium-costa-mujeres-resort-spa/Grand-Palladium-Costa-Mujeres-Resort-Spa_Vista-general-de-la-piscina-principal.jpg.transform/rendition-md/image.jpg" alt="Hotel Imagen">
             <p style="text-align: center;">
                 <a class="button" href="https://palladiumhotels.com/activar-descuento">¡Activa tu descuento ahora! 👉</a>
