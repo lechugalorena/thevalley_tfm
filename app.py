@@ -141,7 +141,9 @@ tipo_habitacion_dict = {
     "Suite": 5,
     "Superior": 6
 }
-aux_tipo_valor = st.slider("Tipo de habitación (0 a 6):", min_value=0, max_value=6, value=3)
+
+tipo_habitacion = st.selectbox("Tipo de habitación:", options=list(tipo_habitacion_dict.keys()))
+aux_tipo_valor = tipo_habitacion_dict[tipo_habitacion]
 
 if st.button("Predecir Cancelación"):
     data = pd.DataFrame({
