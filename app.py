@@ -131,6 +131,16 @@ valor_reserva = st.number_input("Valor de la reserva (€):", min_value=0.0, ste
 cunas_dummy = st.selectbox("¿Se ha solicitado una cuna?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
 adultos = st.number_input("Número de adultos:", min_value=1, step=1, value=2)
 fidelidad_dummy = st.selectbox("¿Es un cliente fidelizado?", options=[0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
+
+tipo_habitacion_dict = {
+    "Default Category": 0,
+    "Deluxe": 1,
+    "Junior Suite": 2,
+    "Presidential": 3,
+    "Standard": 4,
+    "Suite": 5,
+    "Superior": 6
+}
 aux_tipo_valor = st.slider("Tipo de habitación (0 a 6):", min_value=0, max_value=6, value=3)
 
 if st.button("Predecir Cancelación"):
